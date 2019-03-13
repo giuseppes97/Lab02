@@ -16,7 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class AlienController {
-	
+
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -29,8 +29,8 @@ public class AlienController {
     private Button btnTranslate;
     @FXML
     private Button btnReset;
-        
-    
+    AlienDictionary ad=new AlienDictionary();
+   
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
     	assert txtWord != null : "fx:id=\"txtWord\" was not injected: check your FXML file 'Alien.fxml'.";
@@ -43,13 +43,38 @@ public class AlienController {
     
     @FXML
     void doTranslate(ActionEvent event) {
-    	    	
-    }
+    	
+     String parola=txtWord.getText();
+     
+     parola=parola.trim();
+     
+   String s[]=parola.split(" ");
+   if( s.length==2) {
+	   ad.addWord(s[0], s[1]);
+	   txtWord.clear();
+	   txtResult.appendText("Hai aggiunto un parola al dizionario\n");
+   }
+   else if(s.length==1) {
+     for(Word w:ad.listaparole) {
+    	 if (w.getAlienWord().compareTo(parola)==0)
+    	 {
+    		 txtResult.appendText("La parola "+parola+" significa in alienese: "+w.getTranslation()+"\n");
+    		 txtWord.clear();
+    		 return;
+    	 }
+     }
+     if(s[0].length()>0 && s.length==1)
+     { txtResult.appendText("La parola "+parola+" non è contenuta nel dizionario!\n");
+     txtWord.clear();}
+     
+    } else txtResult.appendText("Errore nell'input!\n"); }
     
     
     @FXML
     void doReset(ActionEvent event) {
-
+   txtResult.clear();
+   txtWord.clear();
     }
-    
+  
+ 
 }
